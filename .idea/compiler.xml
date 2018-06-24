@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="spring-and-react" />
+        <module name="spring" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="spring-and-react" target="1.8" />
+      <module name="spring" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

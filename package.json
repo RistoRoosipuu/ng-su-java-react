@@ -1,0 +1,19 @@
+{
+  "name": "ng-su-java-react",
+  "version": "1.0.0",
+  "description": "Java assignment for the SU. Made using Spring and React.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RistoRoosipuu/ng-su-java-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RistoRoosipuu/ng-su-java-react/issues"
+  },
+  "homepage": "https://github.com/RistoRoosipuu/ng-su-java-react#readme"
+}
