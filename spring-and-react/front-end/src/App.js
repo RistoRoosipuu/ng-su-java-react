@@ -1,9 +1,44 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
+import axios from 'axios';
 import './App.css';
 
 class App extends Component {
 
+
+    state = {selectedFile: null}
+
+    fileChangedHandler = (event) => {
+        this.setState({selectedFile: event.target.files[0]});
+        console.log((event.target.files[0]));
+    };
+
+    uploadHandler = () => {
+        const formData = new FormData();
+        formData.set('file', this.state.selectedFile);
+
+        axios({
+            method: 'post',
+            url: '/uploadFile',
+            data: formData
+        })
+            .then(function (response) {
+                //handle success
+
+                console.log("Response: " + response.headers);
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
+
+
+        /*
+        axios.post('/uploadFile', formData);
+        */
+    };
+
+    /*
     state = {};
 
     componentDidMount() {
@@ -11,12 +46,14 @@ class App extends Component {
     }
 
     hello = () => {
-      fetch('/hello')
-          .then(response => response.text())
-          .then(message => {
-             this.setState({message: message});
-          });
+        fetch('/hello')
+            .then(response => response.text())
+            .then(message => {
+                this.setState({message: message});
+            });
     };
+
+    */
 
     render() {
         return (
@@ -25,10 +62,12 @@ class App extends Component {
                     <img src={logo} className="App-logo" alt="logo"/>
                     <h1 className="App-title">{this.state.message}</h1>
                 </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
+                <br/>
+                <br/>
+                <input type="file" onChange={this.fileChangedHandler}/>
+                <button onClick={this.uploadHandler}>Upload!</button>
             </div>
+
         );
     }
 }
