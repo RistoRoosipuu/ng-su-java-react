@@ -22,7 +22,7 @@ class Date extends Component {
             .then((result) => {
                 console.log(result);
                 this.setState({
-                    data: result.data,
+                    count: result.count,
                     loading: false,
                     error: false
                 });

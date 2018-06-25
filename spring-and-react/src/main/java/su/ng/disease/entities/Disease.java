@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
 @Data
 public class Disease {
@@ -13,6 +14,7 @@ public class Disease {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private Long numberOfKnownSymptons;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(

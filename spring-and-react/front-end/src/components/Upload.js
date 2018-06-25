@@ -56,10 +56,10 @@ class Upload extends Component {
                 <input type="file" onChange={this.fileChangedHandler}/>
                 {this.renderRedirect()}
                 <button onClick={() => {
-                    this.uploadHandler();
-                    this.setRedirect();
-                }}>Upload!
+                    this.uploadHandler()
+                }}>Press to Upload file :)
                 </button>
+                <button onClick={this.setRedirect}>After uploading, press to go forward</button>
             </div>
 
         );

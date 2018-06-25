@@ -15,10 +15,15 @@ public class Symptom {
 
     private String name;
 
+    private Long numberOfConnectedDiseases;
+
+
     @ManyToMany(mappedBy = "symptoms")
     private Set<Disease> diseases;
 
     public Symptom(String name) {
         this.name = name;
+        //On creation, there must be a connection
+        this.numberOfConnectedDiseases = 1L;
     }
 }

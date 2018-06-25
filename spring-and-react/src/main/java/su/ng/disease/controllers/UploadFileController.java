@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -34,10 +35,6 @@ public class UploadFileController {
         return "Hello, the time at the server is now " + new Date() + "\n";
     }
 
-    @GetMapping("/hospital")
-    public String dada() {
-        return "hello";
-    }
 
     @PostMapping(value = "/uploadFile")
     public String uploadFile(@RequestParam("file") MultipartFile file) {
@@ -61,6 +58,8 @@ public class UploadFileController {
 
 
                     if (symptom != null) {
+                        Long newConnection = symptom.getNumberOfConnectedDiseases();
+                        symptom.setNumberOfConnectedDiseases(newConnection + 1);
                         symptomSet.add(symptom);
                         log.info("SYMPTOM AS IN THE TABLE " + symptom);
                     } else {
@@ -71,7 +70,7 @@ public class UploadFileController {
                 }
 
                 disease.setSymptoms(symptomSet);
-
+                disease.setNumberOfKnownSymptons((long) disease.getSymptoms().size());
                 diseaseService.createNewDisease(disease);
                 log.info("LINE ENDED!!!!!!!!!!!1");
             }
@@ -81,6 +80,13 @@ public class UploadFileController {
         }
 
         log.info(endResult.toString());
+
+
+        List<Symptom> symptomList = symptomService.findAllSymptomsSortedByCountAndName();
+
+        for (Symptom symptom : symptomList) {
+            log.info("Disease list: " + symptom.getNumberOfConnectedDiseases() + " " + symptom.getName());
+        }
         return endResult.toString();
     }
 }
