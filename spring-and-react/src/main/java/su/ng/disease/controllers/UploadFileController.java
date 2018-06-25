@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import su.ng.disease.entities.Disease;
 import su.ng.disease.entities.Symptom;
 import su.ng.disease.services.DiseaseService;
+import su.ng.disease.services.SymptomService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +27,9 @@ public class UploadFileController {
 
     @Autowired
     private DiseaseService diseaseService;
+
+    @Autowired
+    private SymptomService symptomService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -49,8 +53,17 @@ public class UploadFileController {
                 disease.setName(tempSplittedLines[0]);
 
                 for (int i = 1; i < tempSplittedLines.length; i++) {
+                    String tempValue = tempSplittedLines[i];
+                    Symptom symptom = symptomService.findSymptomByName(tempValue);
 
-                    symptomSet.add(new Symptom(tempSplittedLines[i]));
+
+                    if (symptom != null) {
+                        symptomSet.add(symptom);
+                        log.info("SYMPTOM AS IN THE TABLE " + symptom);
+                    } else {
+                        symptomSet.add(new Symptom(tempValue));
+                        log.info("SYMPTOM WAS NOT IN THE TABLE REEEEEEE");
+                    }
 
                 }
 
