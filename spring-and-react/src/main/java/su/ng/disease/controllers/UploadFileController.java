@@ -2,10 +2,7 @@ package su.ng.disease.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import su.ng.disease.entities.Disease;
 import su.ng.disease.entities.Symptom;
@@ -22,6 +19,7 @@ import java.util.Set;
 
 
 @RestController
+@CrossOrigin
 @Slf4j
 public class UploadFileController {
 
@@ -34,6 +32,11 @@ public class UploadFileController {
     @GetMapping("/hello")
     public String hello() {
         return "Hello, the time at the server is now " + new Date() + "\n";
+    }
+
+    @GetMapping("/hospital")
+    public String dada() {
+        return "hello";
     }
 
     @PostMapping(value = "/uploadFile")

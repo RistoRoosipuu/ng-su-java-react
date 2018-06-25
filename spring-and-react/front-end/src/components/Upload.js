@@ -1,12 +1,22 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import axios from 'axios';
-import './App.css';
+import API from '../common/SharedInfo';
+import {Redirect} from "react-router-dom";
 
-class App extends Component {
+class Upload extends Component {
+    state = {selectedFile: null, redirect: false}
 
 
-    state = {selectedFile: null}
+    setRedirect = () => {
+        this.setState({
+            redirect: true
+        })
+    };
+    renderRedirect = () => {
+        if (this.state.redirect) {
+            return <Redirect to='/hospital'/>
+        }
+    };
 
     fileChangedHandler = (event) => {
         this.setState({selectedFile: event.target.files[0]});
@@ -19,7 +29,7 @@ class App extends Component {
 
         axios({
             method: 'post',
-            url: '/uploadFile',
+            url: API.uploadUrl,
             data: formData
         })
             .then(function (response) {
@@ -33,43 +43,28 @@ class App extends Component {
             });
 
 
-        /*
-        axios.post('/uploadFile', formData);
-        */
     };
-
-    /*
-    state = {};
-
-    componentDidMount() {
-        setInterval(this.hello, 250);
-    }
-
-    hello = () => {
-        fetch('/hello')
-            .then(response => response.text())
-            .then(message => {
-                this.setState({message: message});
-            });
-    };
-
-    */
 
     render() {
         return (
             <div className="App">
                 <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
                     <h1 className="App-title">{this.state.message}</h1>
                 </header>
                 <br/>
                 <br/>
                 <input type="file" onChange={this.fileChangedHandler}/>
-                <button onClick={this.uploadHandler}>Upload!</button>
+                {this.renderRedirect()}
+                <button onClick={() => {
+                    this.uploadHandler();
+                    this.setRedirect();
+                }}>Upload!
+                </button>
             </div>
 
         );
     }
 }
 
-export default App;
+
+export default Upload;
