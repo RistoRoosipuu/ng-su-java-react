@@ -2,12 +2,12 @@ package su.ng.disease.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import su.ng.disease.entities.GeneralInfoResponseObject;
 import su.ng.disease.services.DiseaseService;
 import su.ng.disease.services.SymptomService;
+import su.ng.disease.wrapper.Body;
+import su.ng.disease.wrapper.DiseaseWrapperObject;
 
 import java.util.List;
 
@@ -31,20 +31,19 @@ public class InformationController {
         generalInfoResponseObject.setDiseases(findThreeWithTheMostSymptoms());
         generalInfoResponseObject.setSymptoms(findThreeMostPopularSymptom());
 
-        /**
-         List<String> diseases = findThreeWithTheMostSymptoms().stream()
-         .map(d -> (d.getName()))
-         .collect(Collectors.toList());
-         generalInfoResponseObject.setDiseases(diseases);
-
-         List<String> symptoms = findThreeMostPopularSymptom().stream()
-         .map(s -> (s.getName()))
-         .collect(Collectors.toList());
-         generalInfoResponseObject.setSymptoms(symptoms);
-
-         generalInfoResponseObject.setCount(countUniqueSymptoms());
-         **/
         return generalInfoResponseObject;
+    }
+
+    @PostMapping(value = "/possibleDiseases")
+    public DiseaseWrapperObject getPossibleDisease(@RequestBody Body body){
+        DiseaseWrapperObject diseaseWrapperObject = new DiseaseWrapperObject();
+
+        List<String> findALL = diseaseService.retrieveAllDiseases();
+
+        diseaseWrapperObject.setPossibleDiseases(findALL);
+
+        log.info("Body was: " + body.getName());
+        return diseaseWrapperObject;
     }
 
     /*

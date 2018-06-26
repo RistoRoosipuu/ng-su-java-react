@@ -42,21 +42,7 @@ class General_Info extends Component {
                 console.log(error.message)
             });
 
-        /**
-         return axios.get(API.generalInfoUrl)
-         .then((result) => {
-                console.log(result);
-                return result;
-            })
-         .catch(error => {
-                    console.error("error: ", error);
-                    this.setState({
-                        error: `${error}`,
-                        loading: false
-                    });
-                }
-         )
-         **/
+
 
     };
 

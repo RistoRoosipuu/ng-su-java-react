@@ -24,6 +24,10 @@ public class DiseaseService {
     }
 
 
+    public List<String> retrieveAllDiseases() {
+        return diseaseRepository.findAllDiseases();
+    }
+
     public List<String> findDiseasesWithTheMostSymptoms() {
         return diseaseRepository.findThreeDiseases();
     }

@@ -14,4 +14,7 @@ public interface DiseaseRepository extends PagingAndSortingRepository<Disease, L
             "     GROUP BY DISEASE_ID  \n" +
             "     ORDER BY COUNT(SYMPTOM_ID) DESC, DISEASE.name ASC  LIMIT 3", nativeQuery = true)
     List<String> findThreeDiseases();
+
+    @Query(value = "SELECT NAME FROM DISEASE GROUP BY ID", nativeQuery = true)
+    List<String> findAllDiseases();
 }

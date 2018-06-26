@@ -5,7 +5,8 @@ const API = {
     uploadUrl: `${APILocation}/uploadFile`,
     dateUrl: `${APILocation}/hello`,
     hospitalUrl: `${APILocation}/hospital`,
-    generalInfoUrl: `${APILocation}/generalInfo`
+    generalInfoUrl: `${APILocation}/generalInfo`,
+    postSymptomsUrl: `${APILocation}/possibleDiseases`,
 };
 
 export default API;

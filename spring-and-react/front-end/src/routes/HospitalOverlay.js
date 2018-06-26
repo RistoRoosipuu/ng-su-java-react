@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Hospital from '../components/Hospital';
+import SymptomForm from '../components/SymptomForm';
 import General from '../components/General_Information';
 
 export default () => {
     return (
         <div>
-            <Hospital/>
             <General/>
+            <SymptomForm/>
         </div>
 
     );
