@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import su.ng.disease.entities.TestObject;
+import su.ng.disease.entities.GeneralInfoResponseObject;
 import su.ng.disease.services.DiseaseService;
 import su.ng.disease.services.SymptomService;
 
@@ -24,27 +24,27 @@ public class InformationController {
 
 
     @GetMapping("/generalInfo")
-    public TestObject getGeneralInfo() {
-        TestObject testObject = new TestObject();
+    public GeneralInfoResponseObject getGeneralInfo() {
+        GeneralInfoResponseObject generalInfoResponseObject = new GeneralInfoResponseObject();
 
-        testObject.setCount(countUniqueSymptoms());
-        testObject.setDiseases(findThreeWithTheMostSymptoms());
-        testObject.setSymptoms(findThreeMostPopularSymptom());
+        generalInfoResponseObject.setCount(countUniqueSymptoms());
+        generalInfoResponseObject.setDiseases(findThreeWithTheMostSymptoms());
+        generalInfoResponseObject.setSymptoms(findThreeMostPopularSymptom());
 
         /**
          List<String> diseases = findThreeWithTheMostSymptoms().stream()
          .map(d -> (d.getName()))
          .collect(Collectors.toList());
-         testObject.setDiseases(diseases);
+         generalInfoResponseObject.setDiseases(diseases);
 
          List<String> symptoms = findThreeMostPopularSymptom().stream()
          .map(s -> (s.getName()))
          .collect(Collectors.toList());
-         testObject.setSymptoms(symptoms);
+         generalInfoResponseObject.setSymptoms(symptoms);
 
-         testObject.setCount(countUniqueSymptoms());
+         generalInfoResponseObject.setCount(countUniqueSymptoms());
          **/
-        return testObject;
+        return generalInfoResponseObject;
     }
 
     /*

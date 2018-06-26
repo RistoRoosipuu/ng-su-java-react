@@ -1,11 +1,14 @@
 package su.ng.disease.entities;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@EqualsAndHashCode(exclude = {"diseases"})
 @Data
 public class Symptom {
 
@@ -15,15 +18,12 @@ public class Symptom {
 
     private String name;
 
-    private Long numberOfConnectedDiseases;
-
 
     @ManyToMany(mappedBy = "symptoms")
-    private Set<Disease> diseases;
+    private Set<Disease> diseases = new HashSet<>();
 
     public Symptom(String name) {
         this.name = name;
-        //On creation, there must be a connection
-        this.numberOfConnectedDiseases = 1L;
     }
+
 }

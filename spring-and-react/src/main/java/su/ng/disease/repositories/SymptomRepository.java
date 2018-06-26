@@ -13,6 +13,10 @@ public interface SymptomRepository extends PagingAndSortingRepository<Symptom, L
     @Query(value = "select count(distinct symptom_id) from disease_symptoms", nativeQuery = true)
     Long findSymptomCount();
 
-    @Query(value = "SELECT NAME FROM SYMPTOM  Order by NUMBER_OF_CONNECTED_DISEASES  DESC, NAME ASC LIMIT 3", nativeQuery = true)
+    @Query(value = "    SELECT SYMPTOM.NAME \n" +
+            "      FROM DISEASE_SYMPTOMS Inner Join SYMPTOM  \n" +
+            "Where DISEASE_SYMPTOMS.SYMPTOM_ID  = SYMPTOM.ID\n" +
+            "     GROUP BY SYMPTOM.ID \n" +
+            "     ORDER BY COUNT(DISEASE_ID) DESC, SYMPTOM.name ASC LIMIT 3", nativeQuery = true)
     List<String> findThreeSymptoms();
 }

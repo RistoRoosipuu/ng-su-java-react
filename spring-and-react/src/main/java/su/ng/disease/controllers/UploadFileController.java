@@ -51,25 +51,25 @@ public class UploadFileController {
 
                 disease.setName(tempSplittedLines[0]);
 
+                log.info("New Disease created : " + disease.getName());
+
                 for (int i = 1; i < tempSplittedLines.length; i++) {
                     String tempValue = tempSplittedLines[i];
                     Symptom symptom = symptomService.findSymptomByName(tempValue);
 
-
                     if (symptom != null) {
-                        Long newConnection = symptom.getNumberOfConnectedDiseases();
-                        symptom.setNumberOfConnectedDiseases(newConnection + 1);
                         symptomSet.add(symptom);
                         log.info("SYMPTOM AS IN THE TABLE " + symptom);
                     } else {
-                        symptomSet.add(new Symptom(tempValue));
+                        Symptom createdSymptom = new Symptom(tempValue);
+                        symptomSet.add(createdSymptom);
                         log.info("SYMPTOM WAS NOT IN THE TABLE REEEEEEE");
                     }
 
                 }
 
                 disease.setSymptoms(symptomSet);
-                disease.setNumberOfKnownSymptons((long) disease.getSymptoms().size());
+
                 diseaseService.createNewDisease(disease);
                 log.info("LINE ENDED!!!!!!!!!!!1");
             }

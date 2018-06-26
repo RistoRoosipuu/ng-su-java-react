@@ -19,6 +19,10 @@ public class SymptomService {
         return symptomRepository.findSymptomByName(name);
     }
 
+    public Symptom saveSymptom(Symptom symptom){
+        return symptomRepository.save(symptom);
+    }
+
     public Long findOverallSymptomCount() {
         Long count = symptomRepository.findSymptomCount();
         log.info("Symptom Repository count: " + count);

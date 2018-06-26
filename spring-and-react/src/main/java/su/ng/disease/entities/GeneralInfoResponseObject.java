@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TestObject {
+public class GeneralInfoResponseObject {
 
     private Long count;
 

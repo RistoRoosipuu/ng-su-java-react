@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface DiseaseRepository extends PagingAndSortingRepository<Disease, Long> {
 
-    @Query(value = "SELECT NAME FROM DISEASE Order by NUMBER_OF_KNOWN_SYMPTONS DESC, NAME ASC LIMIT 3", nativeQuery = true)
+    @Query(value = "    SELECT  DISEASE.name\n" +
+            "      FROM DISEASE_SYMPTOMS Inner Join DISEASE \n" +
+            "Where DISEASE_SYMPTOMS.DISEASE_ID = DISEASE.ID \n" +
+            "     GROUP BY DISEASE_ID  \n" +
+            "     ORDER BY COUNT(SYMPTOM_ID) DESC, DISEASE.name ASC  LIMIT 3", nativeQuery = true)
     List<String> findThreeDiseases();
 }
