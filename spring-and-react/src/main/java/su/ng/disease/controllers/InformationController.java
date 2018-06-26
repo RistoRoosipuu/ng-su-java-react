@@ -5,14 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import su.ng.disease.entities.Disease;
-import su.ng.disease.entities.Symptom;
 import su.ng.disease.entities.TestObject;
 import su.ng.disease.services.DiseaseService;
 import su.ng.disease.services.SymptomService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -30,19 +27,23 @@ public class InformationController {
     public TestObject getGeneralInfo() {
         TestObject testObject = new TestObject();
 
-
-        List<String> diseases = findThreeWithTheMostSymptoms().stream()
-                .map(d -> (d.getName()))
-                .collect(Collectors.toList());
-        testObject.setDiseases(diseases);
-
-        List<String> symptoms = findThreeMostPopularSymptom().stream()
-                .map(s -> (s.getName()))
-                .collect(Collectors.toList());
-        testObject.setSymptoms(symptoms);
-
         testObject.setCount(countUniqueSymptoms());
+        testObject.setDiseases(findThreeWithTheMostSymptoms());
+        testObject.setSymptoms(findThreeMostPopularSymptom());
 
+        /**
+         List<String> diseases = findThreeWithTheMostSymptoms().stream()
+         .map(d -> (d.getName()))
+         .collect(Collectors.toList());
+         testObject.setDiseases(diseases);
+
+         List<String> symptoms = findThreeMostPopularSymptom().stream()
+         .map(s -> (s.getName()))
+         .collect(Collectors.toList());
+         testObject.setSymptoms(symptoms);
+
+         testObject.setCount(countUniqueSymptoms());
+         **/
         return testObject;
     }
 
@@ -62,13 +63,13 @@ public class InformationController {
         return symptomService.findOverallSymptomCount();
     }
 
-    public List<Disease> findThreeWithTheMostSymptoms() {
+    public List<String> findThreeWithTheMostSymptoms() {
 
-        return diseaseService.findAllDiseasesSortedByCountAndName();
+        return diseaseService.findDiseasesWithTheMostSymptoms();
     }
 
-    public List<Symptom> findThreeMostPopularSymptom() {
-        return symptomService.findAllSymptomsSortedByCountAndName();
+    public List<String> findThreeMostPopularSymptom() {
+        return symptomService.findSymptomsWithTheMostSymptoms();
     }
 
 

@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import su.ng.disease.entities.Symptom;
 import su.ng.disease.repositories.SymptomRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Comparator.comparing;
 
 @Service
 @Slf4j
@@ -28,23 +25,25 @@ public class SymptomService {
         return count;
     }
 
-
-    public List<Symptom> findAllSymptomsSortedByCountAndName() {
-        Iterable<Symptom> symptomsIterator = symptomRepository.findAll();
-        List<Symptom> symptomList = new ArrayList<>();
-        symptomsIterator.forEach(symptomList::add);
-
-
-        symptomList.sort(comparing(Symptom::getNumberOfConnectedDiseases).thenComparing(comparing(Symptom::getName).reversed()));
-
-        if (symptomList.size() > 3) {
-            List<Symptom> symptoms = new ArrayList<>();
-            for (int i = 1; i <= 3; i++) {
-                symptoms.add(symptomList.get(symptomList.size() - i));
-            }
-            return symptoms;
-        } else {
-            return symptomList;
-        }
+    public List<String> findSymptomsWithTheMostSymptoms() {
+        return symptomRepository.findThreeSymptoms();
     }
+    /**
+     public List<Symptom> findAllSymptomsSortedByCountAndName() {
+     Iterable<Symptom> symptomsIterator = symptomRepository.findAll();
+     List<Symptom> symptomList = new ArrayList<>();
+     symptomsIterator.forEach(symptomList::add);
+     symptomList.sort(comparing(Symptom::getNumberOfConnectedDiseases).thenComparing(comparing(Symptom::getName).reversed()));
+     if (symptomList.size() > 3) {
+     List<Symptom> symptoms = new ArrayList<>();
+     for (int i = 1; i <= 3; i++) {
+     symptoms.add(symptomList.get(symptomList.size() - i));
+     }
+     return symptoms;
+     } else {
+     return symptomList;
+     }
+     }
+
+     **/
 }
