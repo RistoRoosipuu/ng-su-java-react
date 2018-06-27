@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import su.ng.disease.entities.Disease;
 import su.ng.disease.repositories.DiseaseRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -24,7 +26,14 @@ public class DiseaseService {
     }
 
 
-    public List<String> retrieveAllDiseases() {
+    public Set<Disease> retrieveAllDiseases() {
+        Iterable<Disease> diseaseIterable = diseaseRepository.findAll();
+        Set<Disease> diseaseList = new HashSet<>();
+        diseaseIterable.forEach(diseaseList::add);
+        return diseaseList;
+    }
+
+    public List<String> retrieveAllDiseasesAsString() {
         return diseaseRepository.findAllDiseases();
     }
 

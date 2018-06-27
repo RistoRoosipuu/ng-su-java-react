@@ -49,12 +49,12 @@ public class UploadFileController {
                 Disease disease = new Disease();
                 Set<Symptom> symptomSet = new HashSet<>();
 
-                disease.setName(tempSplittedLines[0]);
+                disease.setName(tempSplittedLines[0].trim());
 
                 log.info("New Disease created : " + disease.getName());
 
                 for (int i = 1; i < tempSplittedLines.length; i++) {
-                    String tempValue = tempSplittedLines[i];
+                    String tempValue = tempSplittedLines[i].trim();
                     Symptom symptom = symptomService.findSymptomByName(tempValue);
 
                     if (symptom != null) {

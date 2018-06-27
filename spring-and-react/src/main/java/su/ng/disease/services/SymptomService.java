@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import su.ng.disease.entities.Symptom;
 import su.ng.disease.repositories.SymptomRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,7 +20,7 @@ public class SymptomService {
         return symptomRepository.findSymptomByName(name);
     }
 
-    public Symptom saveSymptom(Symptom symptom){
+    public Symptom saveSymptom(Symptom symptom) {
         return symptomRepository.save(symptom);
     }
 
@@ -29,8 +30,16 @@ public class SymptomService {
         return count;
     }
 
+
     public List<String> findSymptomsWithTheMostSymptoms() {
         return symptomRepository.findThreeSymptoms();
+    }
+
+    public List<Symptom> findAll() {
+        Iterable<Symptom> symptomsIterator = symptomRepository.findAll();
+        List<Symptom> symptomList = new ArrayList<>();
+        symptomsIterator.forEach(symptomList::add);
+        return symptomList;
     }
     /**
      public List<Symptom> findAllSymptomsSortedByCountAndName() {
