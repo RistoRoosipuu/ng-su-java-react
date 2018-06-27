@@ -11,7 +11,7 @@ class SymptomForm extends Component {
             name: '',
             symptoms: [{name: ''}],
             ourDate: '',
-            possibleDiseases: []
+            possibleDiseases: ['None Known']
         };
     }
 
@@ -20,9 +20,37 @@ class SymptomForm extends Component {
 
     test() {
         const knownSymptoms = this.state.possibleDiseases;
+
+        /**
+         const payload =
+         ["hi", "friend", "another", "fire"]
+         ;
+
+
+         const payload2 = this.state.symptoms[0].name;
+         **/
+
+        const symptomsFromState = this.state.symptoms;
+
+        const symptomsToBeSent = [];
+        symptomsFromState.forEach(i => {
+            //console.log("Name: " + i.name);
+            symptomsToBeSent.push(i.name);
+        });
+        /**
+         //const second = ["hi", "friend"];
+         console.log(payload);
+         //console.log(second);
+         console.log(JSON.stringify(payload));
+         const newValue = JSON.stringify(payload);
+         console.log("Json :" + newValue);
+         console.log("Payload 2: " + payload2);
+         **/
         axios.post(API.postSymptomsUrl,
             {
-                'name': "someNameFromTheEather"
+                //'possibleSymptoms': payload
+                'possibleSymptoms': symptomsToBeSent
+                //another
             }, {
                 "headers": {
                     'Content-Type': 'application/json',
@@ -43,11 +71,11 @@ class SymptomForm extends Component {
 
     compareTwo(knownSymptoms, possibleDiseases) {
 
-        if (JSON.stringify(knownSymptoms) != JSON.stringify(possibleDiseases)) [
+        if (JSON.stringify(knownSymptoms) !== JSON.stringify(possibleDiseases)) {
             this.setState({
                 possibleDiseases: possibleDiseases
             })
-        ]
+        }
     }
 
 
@@ -108,7 +136,7 @@ class SymptomForm extends Component {
 
     render() {
         return (
-            <form>
+            <div>
                 <h4>Symptoms You wish to Post about</h4>
                 {this.state.symptoms.map((symptom, idx) => (
                     <div key={`${idx}`}>
@@ -122,12 +150,14 @@ class SymptomForm extends Component {
                     </div>
                 ))}
                 <button type="button" onClick={this.handleAddSymptom}>Add Sympton</button>
-                <button onClick={this.test()}> Submit to Spring API</button>
+                <button onClick={() => {
+                    this.test()
+                }}> Submit to Spring API
+                </button>
                 {this.state.possibleDiseases.map((disease, index) => (
-                    <p>{"Name of the Disease: " + disease}</p>
+                    <p key={`${index}`}>{"Name of the Disease: " + disease}</p>
                 ))}
-                {console.log("In render: " + this.state.possibleDiseases)}
-            </form>
+            </div>
         )
     }
 }

@@ -35,14 +35,14 @@ public class InformationController {
     }
 
     @PostMapping(value = "/possibleDiseases")
-    public DiseaseWrapperObject getPossibleDisease(@RequestBody Body body){
+    public DiseaseWrapperObject getPossibleDisease(@RequestBody Body body) {
         DiseaseWrapperObject diseaseWrapperObject = new DiseaseWrapperObject();
 
         List<String> findALL = diseaseService.retrieveAllDiseases();
 
         diseaseWrapperObject.setPossibleDiseases(findALL);
 
-        log.info("Body was: " + body.getName());
+        log.info("Body was: " + body.getPossibleSymptoms());
         return diseaseWrapperObject;
     }
 
