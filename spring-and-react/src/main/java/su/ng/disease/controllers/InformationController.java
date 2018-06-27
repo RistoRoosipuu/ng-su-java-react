@@ -57,21 +57,22 @@ public class InformationController {
             log.info("We are left with: " + symptom.getName());
         }
         if (symptomsFromBody.isEmpty()) {
+            symptomsFromBody.add("None found!!");
             diseaseWrapperObject.setPossibleDiseases(symptomsFromBody);
         } else {
             //List<String> findALL = diseaseService.retrieveAllDiseasesAsString();
             //diseaseWrapperObject.setPossibleDiseases(findALL);
 
             Set<Disease> diseaseList = diseaseService.retrieveAllDiseases();
-            List<String> allpossibleDiseases = new ArrayList<>();
+            List<String> allPossibleDiseases = new ArrayList<>();
             for (Disease disease : diseaseList) {
                 if (disease.getSymptoms().containsAll(fetchedSymptoms)) {
                     log.info("Disease: " + disease.getName() + "contains all the diseases" + disease.getSymptoms().size() + "  and fetched size" + fetchedSymptoms.size());
-                    allpossibleDiseases.add(disease.getName());
+                    allPossibleDiseases.add(disease.getName());
                 }
             }
 
-            diseaseWrapperObject.setPossibleDiseases(allpossibleDiseases);
+            diseaseWrapperObject.setPossibleDiseases(allPossibleDiseases);
 
         }
         return diseaseWrapperObject;
