@@ -5,9 +5,17 @@ import General from '../components/General_Information';
 
 export default () => {
     return (
-        <div>
-            <General/>
-            <SymptomForm/>
+        <div className="container">
+            <div className="row no-gutters">
+                <div className="col-lg-6">
+                    <General/>
+                </div>
+                <div className="col-lg-6">
+                    <SymptomForm/>
+                </div>
+            </div>
+
+
         </div>
 
     );

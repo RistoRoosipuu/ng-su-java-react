@@ -39,6 +39,9 @@ public class UploadFileController {
     public String uploadFile(@RequestParam("file") MultipartFile file) {
         StringBuilder endResult = new StringBuilder("Response from Controller ");
         BufferedReader br;
+        //Can get the file type like this, thus preventing wrong files from being uploaded.
+        String endType = file.getOriginalFilename().split("\\.")[1];
+
         try {
             String line;
             InputStream is = file.getInputStream();

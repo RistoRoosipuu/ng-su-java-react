@@ -134,29 +134,32 @@ class SymptomForm extends Component {
     };
      **/
 
+
     render() {
         return (
-            <div>
-                <h4>Symptoms You wish to Post about</h4>
-                {this.state.symptoms.map((symptom, idx) => (
-                    <div key={`${idx}`}>
-                        <input
-                            type="text"
-                            placeholder={`Sympton #${idx + 1} name`}
-                            value={symptom.name}
-                            onChange={this.handleSymptomNameChange(idx)}
-                        />
-                        <button type="button" onClick={this.handleRemoveSymptom(idx)}>Remove Sympton</button>
-                    </div>
-                ))}
-                <button type="button" onClick={this.handleAddSymptom}>Add Sympton</button>
-                <button onClick={() => {
+            <div className="card bg-dark text-white h-100">
+                <div className="card-body">
+                    <h4>Symptoms You wish to Post about</h4>
+                    {this.state.symptoms.map((symptom, idx) => (
+                        <div key={`${idx}`}>
+                            <input
+                                type="text"
+                                placeholder={`Sympton #${idx + 1} name`}
+                                value={symptom.name}
+                                onChange={this.handleSymptomNameChange(idx)}
+                            />
+                            <button type="button" onClick={this.handleRemoveSymptom(idx)}>Remove Sympton</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={this.handleAddSymptom}>Add Sympton</button>
+                    {this.state.possibleDiseases.map((disease, index) => (
+                        <p key={`${index}`}>{"Name of the Disease: " + disease}</p>
+                    ))}
+                </div>
+                <button  className="btn btn-success" onClick={() => {
                     this.test()
                 }}> Submit to Spring API
                 </button>
-                {this.state.possibleDiseases.map((disease, index) => (
-                    <p key={`${index}`}>{"Name of the Disease: " + disease}</p>
-                ))}
             </div>
         )
     }

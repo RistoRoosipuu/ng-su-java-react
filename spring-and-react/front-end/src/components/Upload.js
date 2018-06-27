@@ -47,19 +47,45 @@ class Upload extends Component {
 
     render() {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <h1 className="App-title">{this.state.message}</h1>
+            <div className="container">
+                <header id="main-header">
+                    <div className="row no-gutters">
+                        <div className="col-lg-12 col-md-12 col-sm-6 p-4 bg-dark">
+                        </div>
+                    </div>
+                    <div className="row no-gutters">
+                        <div className="col-lg-12 col-md-12 col-sm-6">
+                            <div id="uploadCard" className="bg-secondary text-white h-100">
+                                <div className="p-4 ">
+                                    <input type="file" accept=".csv" onChange={this.fileChangedHandler}/>
+                                    {this.renderRedirect()}
+                                    <button className="float-center" onClick={() => {
+                                        this.uploadHandler()
+                                    }}>Press to Upload file :)
+                                    </button>
+                                </div>
+                                <div className="p-5 bg-dark text-white">
+                                    <div>
+                                        <ul className="list-unstyled">
+                                            <li>Instructions
+                                                <ul>
+                                                    <li>Load CSV file by pressing Browse</li>
+                                                    <li>Press Upload button to submit it</li>
+                                                    <li>Press the Forward button for</li>
+                                                    <li>Assignment 1 and 2</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <button className="float-right" onClick={this.setRedirect}>After uploading, press to go forward</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </header>
-                <br/>
-                <br/>
-                <input type="file" onChange={this.fileChangedHandler}/>
-                {this.renderRedirect()}
-                <button onClick={() => {
-                    this.uploadHandler()
-                }}>Press to Upload file :)
-                </button>
-                <button onClick={this.setRedirect}>After uploading, press to go forward</button>
+
             </div>
 
         );
