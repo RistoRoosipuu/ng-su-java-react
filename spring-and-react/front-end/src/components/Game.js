@@ -11,13 +11,12 @@ class Game extends Component {
         symptomsItHas: [],
         symptomsChosenCorrectly: [],
         allSymptoms: [],
-        tempAllSymptoms: [],
         redirect: false
     };
 
     startInteraction = () => {
         var symptomShownToUser = '';
-        var symptomsItHas, symptomsChosenCorrectly, allSymptoms, tempAllSymptoms;
+        var symptomsItHas, symptomsChosenCorrectly, allSymptoms;
         var diseaseName = '';
         this.getFromInteraction().then(response => {
             symptomShownToUser = response.data.symptomShownToUser;
@@ -25,7 +24,6 @@ class Game extends Component {
             symptomsItHas = response.data.symptomsItHas;
             symptomsChosenCorrectly = response.data.symptomsChosenCorrectly;
             allSymptoms = response.data.allSymptoms;
-            tempAllSymptoms = response.data.tempAllSymptoms;
 
             console.log("Inside setter: " + symptomShownToUser);
             console.log("Disease name: " + diseaseName);
@@ -36,7 +34,6 @@ class Game extends Component {
                 symptomsItHas: symptomsItHas,
                 symptomsChosenCorrectly: symptomsChosenCorrectly,
                 allSymptoms: allSymptoms,
-                tempAllSymptoms: tempAllSymptoms
             })
         });
     };
@@ -58,15 +55,13 @@ class Game extends Component {
         const symptomsItHas = this.state.symptomsItHas;
         const symptomsChosenCorrectly = this.state.symptomsChosenCorrectly;
         const allSymptoms = this.state.allSymptoms;
-        const tempAllSymptoms = this.state.tempAllSymptoms;
         axios.post(apiPath,
             {
                 'diseaseName': diseaseName,
                 'symptomShownToUser': symptomShownToUser,
                 'symptomsItHas': symptomsItHas,
                 'symptomsChosenCorrectly': symptomsChosenCorrectly,
-                'allSymptoms': allSymptoms,
-                'tempAllSymptoms': tempAllSymptoms
+                'allSymptoms': allSymptoms
             }, {
                 "headers": {
                     'Content-Type': 'application/json',
@@ -81,7 +76,6 @@ class Game extends Component {
                 symptomsItHas: response.data.symptomsItHas,
                 symptomsChosenCorrectly: response.data.symptomsChosenCorrectly,
                 allSymptoms: response.data.allSymptoms,
-                tempAllSymptoms: response.data.tempAllSymptoms
             })
         })
             .catch((error) => {

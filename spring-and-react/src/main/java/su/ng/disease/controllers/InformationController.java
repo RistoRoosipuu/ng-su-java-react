@@ -4,12 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import su.ng.disease.entities.Disease;
-import su.ng.disease.wrapper.GeneralInfoResponseObject;
 import su.ng.disease.entities.Symptom;
 import su.ng.disease.services.DiseaseService;
 import su.ng.disease.services.SymptomService;
-import su.ng.disease.wrapper.Body;
 import su.ng.disease.wrapper.DiseaseWrapperObject;
+import su.ng.disease.wrapper.GeneralInfoResponseObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,7 +30,6 @@ public class InformationController {
     @GetMapping("/generalInfo")
     public GeneralInfoResponseObject getGeneralInfo() {
         GeneralInfoResponseObject generalInfoResponseObject = new GeneralInfoResponseObject();
-
         generalInfoResponseObject.setCount(countUniqueSymptoms());
         generalInfoResponseObject.setDiseases(findThreeWithTheMostSymptoms());
         generalInfoResponseObject.setSymptoms(findThreeMostPopularSymptom());
@@ -40,39 +38,37 @@ public class InformationController {
     }
 
     @PostMapping(value = "/possibleDiseases")
-    public DiseaseWrapperObject getPossibleDisease(@RequestBody Body body) {
+    public DiseaseWrapperObject getPossibleDisease(@RequestBody DiseaseWrapperObject wrapperObject) {
         DiseaseWrapperObject diseaseWrapperObject = new DiseaseWrapperObject();
 
         List<String> symptomsFromBody = new ArrayList<>();
 
-        for (String string : body.getPossibleSymptoms()) {
+        for (String string : wrapperObject.getPossibleDiseases()) {
             if (!string.equals("")) {
                 symptomsFromBody.add(string);
-
-                //removed trim from string
             }
         }
         Set<Symptom> fetchedSymptoms = findFromBody(symptomsFromBody);
-        for (Symptom symptom : fetchedSymptoms) {
-            log.info("We are left with: " + symptom.getName());
-        }
+
         if (symptomsFromBody.isEmpty()) {
             symptomsFromBody.add("None found!!");
             diseaseWrapperObject.setPossibleDiseases(symptomsFromBody);
         } else {
-            //List<String> findALL = diseaseService.retrieveAllDiseasesAsString();
-            //diseaseWrapperObject.setPossibleDiseases(findALL);
 
             Set<Disease> diseaseList = diseaseService.retrieveAllDiseases();
             List<String> allPossibleDiseases = new ArrayList<>();
             for (Disease disease : diseaseList) {
                 if (disease.getSymptoms().containsAll(fetchedSymptoms)) {
-                    log.info("Disease: " + disease.getName() + "contains all the diseases" + disease.getSymptoms().size() + "  and fetched size" + fetchedSymptoms.size());
                     allPossibleDiseases.add(disease.getName());
                 }
             }
 
+            if (allPossibleDiseases.isEmpty()) {
+                allPossibleDiseases.add("None found! Spelling mistake?");
+            }
+
             diseaseWrapperObject.setPossibleDiseases(allPossibleDiseases);
+
 
         }
         return diseaseWrapperObject;
@@ -89,30 +85,18 @@ public class InformationController {
 
     }
 
-    /*
-    Probably better to have one GetMapping that sends away an object that contains all 3
-     */
 
-    /**
-     * React fetches this faster than it retrieves it. So, react will show 0 until you refresh the page -.-
-     *
-     * @return
-     */
-    public Long countUniqueSymptoms() {
-        /**
-         * select count(distinct symptom_id) from disease_symptoms
-         */
+    private Long countUniqueSymptoms() {
         return symptomService.findOverallSymptomCount();
     }
 
-    public List<String> findThreeWithTheMostSymptoms() {
+    private List<String> findThreeWithTheMostSymptoms() {
 
         return diseaseService.findDiseasesWithTheMostSymptoms();
     }
 
-    public List<String> findThreeMostPopularSymptom() {
+    private List<String> findThreeMostPopularSymptom() {
         return symptomService.findSymptomsWithTheMostSymptoms();
     }
-
 
 }

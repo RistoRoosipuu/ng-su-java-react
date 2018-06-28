@@ -18,23 +18,15 @@ public class DiseaseService {
     private DiseaseRepository diseaseRepository;
 
     public Disease createNewDisease(Disease disease) {
-
-        //Overwrite checkById to --> check by Name
-        //If exists, get it, if does not exist, create it.
         log.info("Saving " + disease + " into Repository");
         return diseaseRepository.save(disease);
     }
-
 
     public Set<Disease> retrieveAllDiseases() {
         Iterable<Disease> diseaseIterable = diseaseRepository.findAll();
         Set<Disease> diseaseList = new HashSet<>();
         diseaseIterable.forEach(diseaseList::add);
         return diseaseList;
-    }
-
-    public List<String> retrieveAllDiseasesAsString() {
-        return diseaseRepository.findAllDiseases();
     }
 
     public List<String> findDiseasesWithTheMostSymptoms() {
@@ -45,22 +37,7 @@ public class DiseaseService {
         return diseaseRepository.findRandomDisease();
     }
 
-    /**
-     public List<Disease> findAllDiseasesSortedByCountAndName() {
-     Iterable<Disease> diseaseIterator = diseaseRepository.findAll();
-     List<Disease> diseaseList = new ArrayList<>();
-     diseaseIterator.forEach(diseaseList::add);
-     diseaseList.sort(comparing(Disease::getNumberOfKnownSymptons).thenComparing(comparing(Disease::getName).reversed()));
-     if (diseaseList.size() > 3) {
-     List<Disease> diseases = new ArrayList<>();
-     for (int i = 1; i <= 3; i++) {
-     diseases.add(diseaseList.get(diseaseList.size() - i));
-     }
-     return diseases;
-     } else {
-     return diseaseList;
-     }
-     return null;
-     }
-     **/
+    public Disease findDiseaseByName(String symptomShownToUser) {
+        return diseaseRepository.findDiseaseByName(symptomShownToUser);
+    }
 }

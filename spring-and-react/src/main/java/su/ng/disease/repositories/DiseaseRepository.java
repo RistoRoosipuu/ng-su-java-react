@@ -22,4 +22,6 @@ public interface DiseaseRepository extends PagingAndSortingRepository<Disease, L
             "ORDER BY RAND()\n" +
             "LIMIT 1", nativeQuery = true)
     Disease findRandomDisease();
+
+    Disease findDiseaseByName(String symptomShownToUser);
 }

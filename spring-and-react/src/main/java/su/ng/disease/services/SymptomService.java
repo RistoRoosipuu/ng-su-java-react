@@ -34,7 +34,6 @@ public class SymptomService {
         return symptomRepository.findAllSymptoms();
     }
 
-
     public List<String> findSymptomsWithTheMostSymptoms() {
         return symptomRepository.findThreeSymptoms();
     }
@@ -45,22 +44,4 @@ public class SymptomService {
         symptomsIterator.forEach(symptomList::add);
         return symptomList;
     }
-    /**
-     public List<Symptom> findAllSymptomsSortedByCountAndName() {
-     Iterable<Symptom> symptomsIterator = symptomRepository.findAll();
-     List<Symptom> symptomList = new ArrayList<>();
-     symptomsIterator.forEach(symptomList::add);
-     symptomList.sort(comparing(Symptom::getNumberOfConnectedDiseases).thenComparing(comparing(Symptom::getName).reversed()));
-     if (symptomList.size() > 3) {
-     List<Symptom> symptoms = new ArrayList<>();
-     for (int i = 1; i <= 3; i++) {
-     symptoms.add(symptomList.get(symptomList.size() - i));
-     }
-     return symptoms;
-     } else {
-     return symptomList;
-     }
-     }
-
-     **/
 }

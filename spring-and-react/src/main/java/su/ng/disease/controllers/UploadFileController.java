@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -47,32 +48,33 @@ public class UploadFileController {
             while ((line = br.readLine()) != null) {
                 String[] tempSplittedLines = line.split(",");
 
-                Disease disease = new Disease();
-                Set<Symptom> symptomSet = new HashSet<>();
+                String diseaseName = tempSplittedLines[0].trim();
+                Optional<Disease> diseaseOptional = Optional.ofNullable(diseaseService.findDiseaseByName(diseaseName));
 
-                disease.setName(tempSplittedLines[0].trim());
+                if (!diseaseOptional.isPresent()) {
 
-                log.info("New Disease created : " + disease.getName());
+                    Disease disease = new Disease();
+                    Set<Symptom> symptomSet = new HashSet<>();
 
-                for (int i = 1; i < tempSplittedLines.length; i++) {
-                    String tempValue = tempSplittedLines[i].trim();
-                    Symptom symptom = symptomService.findSymptomByName(tempValue);
+                    disease.setName(diseaseName);
 
-                    if (symptom != null) {
-                        symptomSet.add(symptom);
-                        log.info("SYMPTOM AS IN THE TABLE " + symptom);
-                    } else {
-                        Symptom createdSymptom = new Symptom(tempValue);
-                        symptomSet.add(createdSymptom);
-                        log.info("SYMPTOM WAS NOT IN THE TABLE REEEEEEE");
+                    log.info("New Disease created : " + disease.getName());
+
+                    for (int i = 1; i < tempSplittedLines.length; i++) {
+                        String tempValue = tempSplittedLines[i].trim();
+                        Optional<Symptom> symptom = Optional.ofNullable(symptomService.findSymptomByName(tempValue));
+                        if (symptom.isPresent()) {
+                            symptomSet.add(symptom.get());
+                        } else {
+                            Symptom createdSymptom = new Symptom(tempValue);
+                            symptomSet.add(createdSymptom);
+                        }
                     }
-
+                    disease.setSymptoms(symptomSet);
+                    diseaseService.createNewDisease(disease);
+                } else {
+                    log.info("This entity is already in the database");
                 }
-
-                disease.setSymptoms(symptomSet);
-
-                diseaseService.createNewDisease(disease);
-                log.info("LINE ENDED!!!!!!!!!!!1");
             }
 
         } catch (IOException e) {

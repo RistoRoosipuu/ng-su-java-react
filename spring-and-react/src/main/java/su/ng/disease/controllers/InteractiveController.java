@@ -26,6 +26,7 @@ public class InteractiveController {
     @Autowired
     SymptomService symptomService;
 
+
     @GetMapping("/startGame")
     public InteractiveStatusWrapper startGame() {
         InteractiveStatusWrapper wrapper = new InteractiveStatusWrapper();
@@ -34,23 +35,19 @@ public class InteractiveController {
         Disease disease = diseaseService.findRandomDisease();
         List<String> allSymptomsInDatabase = symptomService.findAllSymptoms();
 
-
         wrapper.setDiseaseName(disease.getName());
         wrapper.setSymptomShownToUser(findRandomSymptom(allSymptomsInDatabase));
         wrapper.setAllSymptoms(allSymptomsInDatabase);
         wrapper.setSymptomsChosenCorrectly(new ArrayList<>());
         wrapper.setSymptomsItHas(turnSymptomsIntoStringList(disease.getSymptoms()));
-        wrapper.setTempAllSymptoms(new ArrayList<>());
-
 
         return wrapper;
     }
 
-
     @PostMapping(value = "/agree")
     public InteractiveStatusWrapper hasSymptomAgree(@RequestBody InteractiveStatusWrapper wrapper) {
 
-        log.info("Agree Body is ok: " + wrapper.getDiseaseName());
+        log.info("Agree DiseaseWrapperRequestObject is ok: " + wrapper.getDiseaseName());
         InteractiveStatusWrapper returnObject = new InteractiveStatusWrapper();
 
         List<String> allSymptoms = wrapper.getSymptomsItHas();
@@ -65,40 +62,10 @@ public class InteractiveController {
             }
             if (allSymptoms.contains(symptom)) {
 
-                log.info("Object did indeed contain that symptom: " + wrapper.getSymptomsChosenCorrectly().size());
-                returnObject.setDiseaseName(wrapper.getDiseaseName());
-                returnObject.setSymptomsItHas(wrapper.getSymptomsItHas());
-                List<String> symptomsChosenCorrectly = wrapper.getSymptomsChosenCorrectly();
-                symptomsChosenCorrectly.add(wrapper.getSymptomShownToUser());
-
-                returnObject.setSymptomsChosenCorrectly(symptomsChosenCorrectly);
-
-                List<String> allSymptoms2 = wrapper.getAllSymptoms();
-
-                allSymptoms2.remove(wrapper.getSymptomShownToUser().trim());
-
-                returnObject.setAllSymptoms(allSymptoms2);
-
-                returnObject.setSymptomShownToUser(findRandomSymptom(allSymptoms2));
-
-                log.info("Object now has found:: " + returnObject.getSymptomsChosenCorrectly().size());
-
-                return returnObject;
-
+                return agreeContainedSymptom(returnObject, wrapper);
             } else {
-
-                log.info("Object did not have that symptom " + wrapper.getSymptomShownToUser() + " , fetching a new one");
-                log.info("All symptoms it had: " + wrapper.getSymptomsItHas());
-                log.info("Symptom you are asking about: " + wrapper.getSymptomShownToUser());
                 returnObject = wrapper;
-
-
                 String symptomChanged = findRandomSymptom(wrapper.getAllSymptoms());
-                //returnObject.setSymptomShownToUser(findRandomSymptom(wrapper.getAllSymptoms()));
-
-                log.info("Old Symptom was: " + returnObject.getSymptomShownToUser());
-                log.info("New Symptom to look for is: " + symptomChanged);
-
                 returnObject.setSymptomShownToUser(symptomChanged);
 
                 return returnObject;
@@ -113,15 +80,13 @@ public class InteractiveController {
 
             return returnObject;
         }
-
-
     }
 
     @PostMapping(value = "/deny")
     public InteractiveStatusWrapper hasSymptomDeny(@RequestBody InteractiveStatusWrapper wrapper) {
 
-        log.info("Deny Body is ok: " + wrapper.getDiseaseName());
-        InteractiveStatusWrapper returnObject = new InteractiveStatusWrapper();
+        log.info("Deny DiseaseWrapperRequestObject is ok: " + wrapper.getDiseaseName());
+        InteractiveStatusWrapper returnObject;
 
         List<String> allSymptoms = wrapper.getSymptomsItHas();
         String symptom = wrapper.getSymptomShownToUser().trim();
@@ -134,39 +99,20 @@ public class InteractiveController {
                 return returnObject;
             }
             if (allSymptoms.contains(symptom)) {
-                log.info("Object actually had this object " + wrapper.getSymptomShownToUser() + " ,but i have to fetch a new one");
-                log.info("All symptoms it had: " + wrapper.getSymptomsItHas());
-                log.info("Symptom you are asking about: " + wrapper.getSymptomShownToUser());
                 returnObject = wrapper;
-
-
                 String symptomChanged = findRandomSymptom(wrapper.getAllSymptoms());
-                //returnObject.setSymptomShownToUser(findRandomSymptom(wrapper.getAllSymptoms()));
-
-                log.info("Old Symptom was: " + returnObject.getSymptomShownToUser());
-                log.info("New Symptom to look for is: " + symptomChanged);
-
                 returnObject.setSymptomShownToUser(symptomChanged);
 
                 return returnObject;
             } else {
-
                 List<String> allSymptoms2 = wrapper.getAllSymptoms();
                 allSymptoms2.remove(wrapper.getSymptomShownToUser().trim());
-
                 returnObject = wrapper;
-
                 returnObject.setAllSymptoms(allSymptoms2);
-
                 String symptomChanged = findRandomSymptom(allSymptoms2);
-
                 returnObject.setSymptomShownToUser(symptomChanged);
 
-                log.info("It did not have this symptom, so removing it from all symptoms");
-
-
                 return returnObject;
-
             }
 
         } else {
@@ -190,5 +136,27 @@ public class InteractiveController {
 
     private List<String> turnSymptomsIntoStringList(Set<Symptom> symptoms) {
         return symptoms.stream().map(Symptom::getName).collect(toList());
+    }
+
+    private InteractiveStatusWrapper agreeContainedSymptom(InteractiveStatusWrapper sendBack, InteractiveStatusWrapper arrive) {
+        log.info("Object did indeed contain that symptom: " + arrive.getSymptomsChosenCorrectly().size());
+        sendBack.setDiseaseName(arrive.getDiseaseName());
+        sendBack.setSymptomsItHas(arrive.getSymptomsItHas());
+        List<String> symptomsChosenCorrectly = arrive.getSymptomsChosenCorrectly();
+        symptomsChosenCorrectly.add(arrive.getSymptomShownToUser());
+
+        sendBack.setSymptomsChosenCorrectly(symptomsChosenCorrectly);
+
+        List<String> allSymptoms2 = arrive.getAllSymptoms();
+
+        allSymptoms2.remove(arrive.getSymptomShownToUser().trim());
+
+        sendBack.setAllSymptoms(allSymptoms2);
+
+        sendBack.setSymptomShownToUser(findRandomSymptom(allSymptoms2));
+
+        log.info("Object now has found:: " + sendBack.getSymptomsChosenCorrectly().size());
+
+        return sendBack;
     }
 }

@@ -29,7 +29,8 @@ class SymptomForm extends Component {
 
         axios.post(API.postSymptomsUrl,
             {
-                'possibleSymptoms': symptomsToBeSent
+                //'possibleSymptoms': symptomsToBeSent
+                'possibleDiseases': symptomsToBeSent
             }, {
                 "headers": {
                     'Content-Type': 'application/json',

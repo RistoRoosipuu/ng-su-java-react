@@ -10,7 +10,6 @@ public interface SymptomRepository extends PagingAndSortingRepository<Symptom, L
 
     Symptom findSymptomByName(String name);
 
-
     @Query(value = "select count(distinct symptom_id) from disease_symptoms", nativeQuery = true)
     Long findSymptomCount();
 
