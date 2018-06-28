@@ -22,6 +22,9 @@ public class Symptom {
     @ManyToMany(mappedBy = "symptoms")
     private Set<Disease> diseases = new HashSet<>();
 
+    public Symptom() {
+    }
+
     public Symptom(String name) {
         this.name = name;
     }

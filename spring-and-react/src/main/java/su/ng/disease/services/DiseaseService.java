@@ -40,4 +40,8 @@ public class DiseaseService {
     public Disease findDiseaseByName(String symptomShownToUser) {
         return diseaseRepository.findDiseaseByName(symptomShownToUser);
     }
+
+    protected List<String> findAllDiseases() {
+        return diseaseRepository.findAllDiseases();
+    }
 }
