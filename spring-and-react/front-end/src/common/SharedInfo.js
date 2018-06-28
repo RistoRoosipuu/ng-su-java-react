@@ -7,6 +7,9 @@ const API = {
     hospitalUrl: `${APILocation}/hospital`,
     generalInfoUrl: `${APILocation}/generalInfo`,
     postSymptomsUrl: `${APILocation}/possibleDiseases`,
+    startInteractionUrl: `${APILocation}/startGame`,
+    agreeUrl: `${APILocation}/agree`,
+    denyUrl: `${APILocation}/deny`,
 };
 
 export default API;

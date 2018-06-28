@@ -17,4 +17,9 @@ public interface DiseaseRepository extends PagingAndSortingRepository<Disease, L
 
     @Query(value = "SELECT NAME FROM DISEASE GROUP BY ID", nativeQuery = true)
     List<String> findAllDiseases();
+
+    @Query(value = "SELECT * FROM DISEASE \n" +
+            "ORDER BY RAND()\n" +
+            "LIMIT 1", nativeQuery = true)
+    Disease findRandomDisease();
 }

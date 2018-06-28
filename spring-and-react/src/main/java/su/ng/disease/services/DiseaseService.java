@@ -41,6 +41,10 @@ public class DiseaseService {
         return diseaseRepository.findThreeDiseases();
     }
 
+    public Disease findRandomDisease() {
+        return diseaseRepository.findRandomDisease();
+    }
+
     /**
      public List<Disease> findAllDiseasesSortedByCountAndName() {
      Iterable<Disease> diseaseIterator = diseaseRepository.findAll();

@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import su.ng.disease.entities.Disease;
-import su.ng.disease.entities.GeneralInfoResponseObject;
+import su.ng.disease.wrapper.GeneralInfoResponseObject;
 import su.ng.disease.entities.Symptom;
 import su.ng.disease.services.DiseaseService;
 import su.ng.disease.services.SymptomService;

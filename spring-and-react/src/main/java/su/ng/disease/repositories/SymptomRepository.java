@@ -20,4 +20,7 @@ public interface SymptomRepository extends PagingAndSortingRepository<Symptom, L
             "     GROUP BY SYMPTOM.ID \n" +
             "     ORDER BY COUNT(DISEASE_ID) DESC, SYMPTOM.name ASC LIMIT 3", nativeQuery = true)
     List<String> findThreeSymptoms();
+
+    @Query(value = "SELECT SYMPTOM.NAME FROM SYMPTOM GROUP BY ID", nativeQuery = true)
+    List<String> findAllSymptoms();
 }

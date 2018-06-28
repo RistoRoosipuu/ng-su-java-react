@@ -30,6 +30,10 @@ public class SymptomService {
         return count;
     }
 
+    public List<String> findAllSymptoms() {
+        return symptomRepository.findAllSymptoms();
+    }
+
 
     public List<String> findSymptomsWithTheMostSymptoms() {
         return symptomRepository.findThreeSymptoms();

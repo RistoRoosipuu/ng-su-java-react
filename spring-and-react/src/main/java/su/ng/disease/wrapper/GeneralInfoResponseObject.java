@@ -1,4 +1,4 @@
-package su.ng.disease.entities;
+package su.ng.disease.wrapper;
 
 import lombok.Data;
 
