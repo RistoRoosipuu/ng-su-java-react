@@ -12,11 +12,9 @@ class Date extends Component {
 
     componentDidMount() {
         this.helloDateHandler();
-
     }
 
     helloDateHandler = () => {
-
         this.setState({loading: true});
         return axios.get(API.dateUrl)
             .then((result) => {
@@ -34,8 +32,6 @@ class Date extends Component {
                     loading: false
                 });
             })
-
-
     };
 
 

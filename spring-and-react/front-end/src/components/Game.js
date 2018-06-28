@@ -1,19 +1,19 @@
 import API from "../common/SharedInfo";
 import React, {Component} from 'react';
 import axios from 'axios';
+import Redirect from "react-router-dom/es/Redirect";
 
 class Game extends Component {
 
     state = {
         symptomShownToUser: '',
-        //gameObject: null
         diseaseName: '',
         symptomsItHas: [],
         symptomsChosenCorrectly: [],
         allSymptoms: [],
-        tempAllSymptoms: []
+        tempAllSymptoms: [],
+        redirect: false
     };
-
 
     startInteraction = () => {
         var symptomShownToUser = '';
@@ -27,10 +27,6 @@ class Game extends Component {
             allSymptoms = response.data.allSymptoms;
             tempAllSymptoms = response.data.tempAllSymptoms;
 
-
-            //gameObject = response.data;
-            //symptoms = response.data.symptoms;
-            //diseases = response.data.diseases;
             console.log("Inside setter: " + symptomShownToUser);
             console.log("Disease name: " + diseaseName);
             this.setState({
@@ -43,14 +39,9 @@ class Game extends Component {
                 tempAllSymptoms: tempAllSymptoms
             })
         });
-
-
     };
 
     getFromInteraction = () => {
-
-        //this.setState({loading: true});
-
         return axios.get(API.startInteractionUrl)
             .then(data => {
                 console.log(data);
@@ -59,8 +50,6 @@ class Game extends Component {
             .catch((error) => {
                 console.log(error.message)
             });
-
-
     };
 
     agree(apiPath) {
@@ -72,18 +61,12 @@ class Game extends Component {
         const tempAllSymptoms = this.state.tempAllSymptoms;
         axios.post(apiPath,
             {
-                //'possibleSymptoms': payload
-                //'possibleSymptoms': symptomsToBeSent
-                //another
-                //payload
                 'diseaseName': diseaseName,
                 'symptomShownToUser': symptomShownToUser,
                 'symptomsItHas': symptomsItHas,
                 'symptomsChosenCorrectly': symptomsChosenCorrectly,
                 'allSymptoms': allSymptoms,
                 'tempAllSymptoms': tempAllSymptoms
-
-
             }, {
                 "headers": {
                     'Content-Type': 'application/json',
@@ -94,51 +77,72 @@ class Game extends Component {
 
             this.setState({
                 symptomShownToUser: response.data.symptomShownToUser,
-                //gameObject: gameObject
                 diseaseName: response.data.diseaseName,
                 symptomsItHas: response.data.symptomsItHas,
                 symptomsChosenCorrectly: response.data.symptomsChosenCorrectly,
                 allSymptoms: response.data.allSymptoms,
                 tempAllSymptoms: response.data.tempAllSymptoms
             })
-
         })
             .catch((error) => {
                 console.log("axios error:", error);
             });
     }
 
+    setRedirect = () => {
+        this.setState({
+            redirect: true
+        })
+    };
+    renderRedirect = () => {
+        if (this.state.redirect) {
+            return <Redirect to='/'/>
+        }
+    };
 
     render() {
         const symptomShownToUser = this.state.symptomShownToUser;
         const diseaseName = this.state.diseaseName;
-
         let result;
-
-        if (symptomShownToUser !== 'success') {
+        if (symptomShownToUser !== 'success' && symptomShownToUser !== '') {
             result = <div>
-                <h1>Is this the right symptom: {symptomShownToUser} ?</h1>
+                <h2 className="d-inline">Could this symptom be in the disease: </h2><h4
+                className="d-inline">{symptomShownToUser}</h4>
             </div>
         } else {
-            result = <div>
-                <h1>Disease found: It was: {diseaseName}</h1>
-            </div>
+            if (diseaseName !== '') {
+                result = <div>
+                    <h2 className="d-inline">Disease found: It was: </h2><h4 className="d-inline text-success">{diseaseName}</h4>
+                </div>
+            } else {
+                result = <div>
+                    <h2>Fetch a Symptom from the API :)</h2>
+                </div>
+            }
         }
         return (
-            <div>
-                <p>From Game</p>
-                <button onClick={() => {
+            <div className="card bg-dark text-white h-100">
+                {this.renderRedirect()}
+                <button className="btn btn-dark btn-outline-danger" onClick={this.setRedirect}>Back to Upload</button>
+                <div className="card-body">
+                    {result}
+                    <div>
+                        <button className="btn mx-2 form-inline float-right"
+                                onClick={() => this.agree(API.agreeUrl)}>Yes
+                        </button>
+                    </div>
+                    <div>
+                        <button className="btn form-inline float-right" onClick={() => this.agree(API.denyUrl)}>No
+                        </button>
+                    </div>
+                </div>
+                <button className="btn btn-success" onClick={() => {
                     this.startInteraction()
-                }}>Fetch a new Disease
+                }}> Fetch a new Disease
                 </button>
-                <button onClick={() => this.agree(API.agreeUrl)}>Yes</button>
-                <button onClick={() => this.agree(API.denyUrl)}>No</button>
-                {result}
             </div>
         )
     }
-
-
 }
 
 export default Game;

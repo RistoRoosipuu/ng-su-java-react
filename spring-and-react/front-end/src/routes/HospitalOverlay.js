@@ -14,9 +14,6 @@ export default () => {
                     <SymptomForm/>
                 </div>
             </div>
-
-
         </div>
-
     );
 }

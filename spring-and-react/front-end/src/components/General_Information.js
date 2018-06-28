@@ -15,10 +15,7 @@ class General_Info extends Component {
     };
 
     componentDidMount() {
-        //this.generalInfoHandler();
-
         this.handler();
-
     }
 
     handler = () => {
@@ -32,9 +29,6 @@ class General_Info extends Component {
     };
 
     generalInfoHandler = () => {
-
-        //this.setState({loading: true});
-
         return axios.get(API.generalInfoUrl)
             .then(data => {
                 console.log(data);
@@ -43,8 +37,6 @@ class General_Info extends Component {
             .catch((error) => {
                 console.log(error.message)
             });
-
-
     };
 
     setRedirect = () => {
@@ -60,13 +52,11 @@ class General_Info extends Component {
 
     render() {
         const {count, diseases, symptoms} = this.state;
-
         return (
             <div className="card bg-dark text-white h-100">
                 {this.renderRedirect()}
                 <button className="btn btn-dark btn-outline-danger" onClick={this.setRedirect}>Back to Upload</button>
                 <div className="card-body">
-
                     <div>
                         <h1>Number Of Symptoms known by the API </h1>
                         <p>{count}</p>

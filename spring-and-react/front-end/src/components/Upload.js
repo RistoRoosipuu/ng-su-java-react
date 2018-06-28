@@ -4,17 +4,28 @@ import API from '../common/SharedInfo';
 import {Redirect} from "react-router-dom";
 
 class Upload extends Component {
-    state = {selectedFile: null, redirect: false}
+    state = {selectedFile: null, redirectHospital: false, redirectGame: false}
 
-
-    setRedirect = () => {
+    setRedirectHospital = () => {
         this.setState({
-            redirect: true
+            redirectHospital: true
         })
     };
-    renderRedirect = () => {
-        if (this.state.redirect) {
+
+    setRedirectGame = () => {
+        this.setState({
+            redirectGame: true
+        })
+    };
+    renderRedirectToHospital = () => {
+        if (this.state.redirectHospital) {
             return <Redirect to='/hospital'/>
+        }
+    };
+
+    renderRedirectToGame = () => {
+        if (this.state.redirectGame) {
+            return <Redirect to='/game'/>
         }
     };
 
@@ -33,16 +44,11 @@ class Upload extends Component {
             data: formData
         })
             .then(function (response) {
-                //handle success
-
                 console.log("Response: " + response.headers);
             })
             .catch(function (response) {
-                //handle error
                 console.log(response);
             });
-
-
     };
 
     render() {
@@ -58,8 +64,8 @@ class Upload extends Component {
                             <div id="uploadCard" className="bg-secondary text-white h-100">
                                 <div className="p-4 ">
                                     <input type="file" accept=".csv" onChange={this.fileChangedHandler}/>
-                                    {this.renderRedirect()}
-                                    <button className="float-center" onClick={() => {
+                                    {this.renderRedirectToHospital()} {this.renderRedirectToGame()}
+                                    <button className="btn-success float-center" onClick={() => {
                                         this.uploadHandler()
                                     }}>Press to Upload file :)
                                     </button>
@@ -71,23 +77,29 @@ class Upload extends Component {
                                                 <ul>
                                                     <li>Load CSV file by pressing Browse</li>
                                                     <li>Press Upload button to submit it</li>
-                                                    <li>Press the Forward button for</li>
-                                                    <li>Assignment 1 and 2</li>
+                                                    <li>Press the other buttons for navigation</li>
                                                 </ul>
                                             </li>
                                         </ul>
                                     </div>
-                                    <button className="float-right" onClick={this.setRedirect}>After uploading, press to go forward</button>
+                                    <div>
+                                        <button className="btn mx-1 float-right" onClick={this.setRedirectGame}>Go to
+                                            Assignment 3
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button className="btn mx-1 float-right" onClick={this.setRedirectHospital}>Go
+                                            to
+                                            Assignment 1/2
+                                        </button>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </header>
-
             </div>
-
         );
     }
 }

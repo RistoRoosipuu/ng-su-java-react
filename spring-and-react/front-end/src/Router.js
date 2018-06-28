@@ -11,7 +11,6 @@ const Router = () => (
             <Route exact path="/hospital" component={HospitalOverlay}/>
             <Route exact path="/game" component={GameOverlay}/>
         </Switch>
-
     </BrowserRouter>
 );
 
